@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>谢泳乐 · 个人介绍 | 横屏 About Me</title>
+<style>
+  :root{
+    --pink:#f2cdd8;
+    --red:#d9342b;
+    --ink:#141414;
+    --paper:#fbf7f0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    min-height:100vh;background:var(--pink);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    color:var(--ink);padding:32px 16px;position:relative;overflow-x:hidden;
+  }
+  .side-tag{
+    position:fixed;left:18px;top:50%;transform:translateY(-50%);
+    writing-mode:vertical-rl;letter-spacing:.4em;font-size:13px;font-weight:700;
+    color:#c4526e;background:rgba(255,255,255,.55);padding:14px 6px;border-radius:8px;
+  }
+  .bottom-caption{margin-top:20px;color:#fff;font-size:20px;font-weight:800;letter-spacing:.25em;}
+
+  /* 主卡片：16:9 横屏 */
+  .cover{
+    width:min(1180px,97vw);
+    aspect-ratio:16/9;
+    background:var(--paper);
+    border-radius:18px;
+    box-shadow:0 24px 60px rgba(150,60,90,.28),0 4px 14px rgba(150,60,90,.18);
+    position:relative;overflow:hidden;
+  }
+
+  .topbar{
+    position:absolute;top:0;left:0;right:0;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:16px 28px 10px;font-size:13px;font-weight:800;letter-spacing:.12em;
+    border-bottom:1px solid rgba(0,0,0,.08);z-index:6;
+  }
+  .topbar .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--red);margin-left:8px;vertical-align:middle;}
+
+  .bottombar{
+    position:absolute;bottom:0;left:0;right:0;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:12px 28px;font-size:12px;font-weight:700;letter-spacing:.18em;
+    border-top:1px solid rgba(0,0,0,.1);z-index:6;
+  }
+
+  /* 背景大字（横排铺满） */
+  .big-word{
+    position:absolute;top:30%;left:54%;
+    transform:translateX(-50%);
+    font-size:clamp(110px,15vw,180px);font-weight:900;font-style:italic;
+    color:transparent;-webkit-text-stroke:2px rgba(0,0,0,.14);
+    letter-spacing:.03em;user-select:none;z-index:1;
+  }
+
+  /* 人物（左侧） */
+  .character{
+    position:absolute;bottom:0;left:3%;
+    height:96%;z-index:3;
+    filter:drop-shadow(0 18px 22px rgba(0,0,0,.18));
+  }
+
+  /* 右侧标题 */
+  .title-block{position:absolute;right:5%;top:12%;text-align:right;z-index:5;}
+  .title-block .name-cn{font-size:clamp(40px,5vw,62px);font-weight:900;color:var(--red);letter-spacing:.06em;line-height:1.1;}
+  .title-block .name-en{font-size:clamp(26px,3.2vw,40px);font-weight:900;color:var(--red);font-style:italic;line-height:1.15;}
+  .title-block .name-sub{font-size:clamp(28px,3.6vw,44px);font-weight:900;color:var(--ink);letter-spacing:.14em;line-height:1.2;}
+
+  /* 右侧爱好 + 口号 */
+  .hobby-block{position:absolute;right:5%;top:52%;text-align:right;z-index:5;}
+  .hobby-block h4{color:var(--red);font-size:20px;font-weight:900;margin-bottom:8px;letter-spacing:.1em;}
+  .hobby-block ul{list-style:none;}
+  .hobby-block li{font-size:15px;font-weight:600;line-height:1.9;color:#222;}
+  .motto{position:absolute;right:5%;bottom:9%;text-align:right;z-index:5;}
+  .motto .script{font-family:"Segoe Script","Brush Script MT",cursive;font-size:clamp(20px,2.4vw,28px);color:var(--ink);font-weight:700;}
+  .motto .sub{font-size:11px;font-weight:900;letter-spacing:.3em;color:var(--red);margin-top:4px;}
+
+  /* 底部四张票券：横排 */
+  .tickets{position:absolute;left:30%;right:3%;bottom:9%;height:auto;display:flex;justify-content:space-between;gap:10px;z-index:4;}
+  .ticket{
+    flex:1;background:#fff;border:2px solid var(--ink);border-radius:10px;
+    padding:12px 12px 10px;box-shadow:4px 5px 0 rgba(0,0,0,.85);
+  }
+  .ticket .row1{display:flex;justify-content:space-between;align-items:flex-start;}
+  .ticket .num{font-size:26px;font-weight:900;font-style:italic;line-height:1;}
+  .ticket .ticks{font-size:10px;letter-spacing:2px;}
+  .ticket h3{font-size:15px;font-weight:900;margin-top:2px;}
+  .ticket .en{font-size:8.5px;font-weight:800;letter-spacing:.18em;color:var(--red);margin-top:2px;}
+  .ticket ul{list-style:none;margin-top:6px;font-size:10px;color:#333;line-height:1.5;}
+  .ticket li::before{content:"— ";color:var(--red);}
+  .ticket .barcode{margin-top:8px;height:13px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 5px,transparent 5px 7px,var(--ink) 7px 10px,transparent 10px 12px);}
+  .tickets .ticket:nth-child(1){transform:rotate(-5deg);}
+  .tickets .ticket:nth-child(2){transform:rotate(3deg);}
+  .tickets .ticket:nth-child(3){transform:rotate(-3deg);}
+  .tickets .ticket:nth-child(4){transform:rotate(5deg);}
+
+  .meta-mini{position:absolute;font-size:9px;letter-spacing:.25em;color:#9a9a9a;z-index:2;}
+  .m1{right:6%;top:8%;}
+  .plus{position:absolute;color:#9a9a9a;font-weight:300;z-index:2;}
+  .p1{left:26%;top:16%;font-size:18px;}
+  .p2{left:50%;top:70%;font-size:14px;}
+
+  @media (max-width:760px){
+    .cover{aspect-ratio:auto;height:auto;padding:70px 18px 30px;}
+    .title-block,.hobby-block,.motto{position:static;text-align:center;margin:14px 0;}
+    .character{position:static;display:block;margin:10px auto;height:320px;}
+    .tickets{position:static;flex-direction:column;gap:12px;margin-top:10px;}
+    .tickets .ticket{transform:none !important;}
+    .big-word{font-size:90px;left:50%;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="side-tag">个人封面制作 · 横屏</div>
+
+  <div class="cover">
+    <div class="topbar">
+      <span>谢泳乐 / PORTFOLIO</span>
+      <span>STUDY · CREATE · EXPLORE<span class="dot"></span></span>
+    </div>
+
+    <div class="meta-mini m1">2026 · FILE 002</div>
+    <span class="plus p1">+</span>
+    <span class="plus p2">+</span>
+
+    <div class="big-word">CREATE</div>
+
+    <!-- 3D 人物（左） -->
+    <img class="character" src="assets/character.png" alt="谢泳乐的3D形象">
+
+    <!-- 右侧标题 -->
+    <div class="title-block">
+      <div class="name-cn">谢泳乐</div>
+      <div class="name-en">ABOUT ME</div>
+      <div class="name-sub">个人介绍</div>
+    </div>
+
+    <!-- 右侧爱好 + 口号 -->
+    <div class="hobby-block">
+      <h4>爱好</h4>
+      <ul>
+        <li>听音乐</li>
+        <li>看电影</li>
+        <li>探索新工具</li>
+      </ul>
+    </div>
+
+    <div class="motto">
+      <div class="script">Stay curious.</div>
+      <div class="sub">MAKE THINGS HAPPEN.</div>
+    </div>
+
+    <!-- 底部四张票券（横排） -->
+    <div class="tickets">
+      <div class="ticket">
+        <div class="row1"><span class="num">01</span><span class="ticks">▚▚▚</span></div>
+        <h3>学习经历</h3>
+        <div class="en">ACADEMICS</div>
+        <ul><li>高中在读</li><li>认真过好每一天</li></ul>
+        <div class="barcode"></div>
+      </div>
+      <div class="ticket">
+        <div class="row1"><span class="num">02</span><span class="ticks">▚▚▚</span></div>
+        <h3>课堂展示</h3>
+        <div class="en">PRESENTATION</div>
+        <ul><li>英语课堂演讲</li><li>小组成果汇报</li></ul>
+        <div class="barcode"></div>
+      </div>
+      <div class="ticket">
+        <div class="row1"><span class="num">03</span><span class="ticks">▚▚▚</span></div>
+        <h3>兴趣探索</h3>
+        <div class="en">HOBBY LAB</div>
+        <ul><li>网页制作</li><li>探索新工具</li></ul>
+        <div class="barcode"></div>
+      </div>
+      <div class="ticket">
+        <div class="row1"><span class="num">04</span><span class="ticks">▚▚▚</span></div>
+        <h3>荣誉奖项</h3>
+        <div class="en">HONORS</div>
+        <ul><li>校园奖项</li><li>持续更新中…</li></ul>
+        <div class="barcode"></div>
+      </div>
+    </div>
+
+    <div class="bottombar">
+      <span>谢泳乐 · PERSONAL ARCHIVE</span>
+      <span>IDEAS INTO REALITY</span>
+    </div>
+  </div>
+
+  <div class="bottom-caption">可以截图保存</div>
+
+</body>
+</html>

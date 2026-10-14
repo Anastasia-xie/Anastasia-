@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>谢泳乐 · 个人介绍 | About Me</title>
+<style>
+  :root{
+    --sky:#d8e7fb;
+    --blue:#2e6fe0;
+    --ink:#1a2740;
+    --paper:#ffffff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    min-height:100vh;
+    background:var(--sky);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    color:var(--ink);
+    padding:40px 16px 30px;
+    position:relative;overflow-x:hidden;
+  }
+
+  /* 左侧竖排小标签 */
+  .side-tag{
+    position:fixed;left:16px;top:50%;transform:translateY(-50%);
+    writing-mode:vertical-rl;letter-spacing:.4em;font-size:14px;font-weight:800;
+    color:#fff;background:var(--blue);padding:16px 7px;border-radius:10px;
+  }
+
+  /* ===== 舞台：卡片 + 破框人物 ===== */
+  .stage{
+    width:min(1180px,94vw);
+    position:relative;
+  }
+  .cover{
+    width:100%;
+    aspect-ratio:1180/660;
+    background:var(--paper);
+    border-radius:14px;
+    box-shadow:0 26px 60px rgba(40,90,180,.28),0 4px 14px rgba(40,90,180,.15);
+    position:relative;overflow:hidden;
+  }
+
+  /* 顶部栏 */
+  .topbar{
+    position:absolute;top:0;left:0;right:0;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:15px 26px 9px;font-size:13px;font-weight:800;letter-spacing:.1em;
+    border-bottom:1px solid rgba(0,0,0,.07);z-index:6;
+  }
+  .topbar .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--blue);margin-left:8px;vertical-align:middle;}
+
+  /* 底部栏 */
+  .bottombar{
+    position:absolute;bottom:0;left:0;right:0;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:11px 26px;font-size:12px;font-weight:700;letter-spacing:.16em;
+    border-top:1px solid rgba(0,0,0,.1);z-index:6;
+  }
+
+  /* 背景描边大字 CREATE（人物身后） */
+  .big-word{
+    position:absolute;top:36%;left:50%;transform:translate(-50%,-50%);
+    font-size:clamp(130px,16vw,200px);font-weight:900;font-style:italic;
+    color:transparent;-webkit-text-stroke:2.5px rgba(0,0,0,.13);
+    letter-spacing:.02em;user-select:none;z-index:1;
+  }
+
+  /* ===== 3D 人物：坐姿 + 裸眼3D破框 ===== */
+  .character{
+    position:absolute;bottom:0;left:50%;
+    transform:translateX(-50%);
+    transform-origin:50% 100%;   /* 以坐姿臀部为支点转头 */
+    height:106%;z-index:7;
+    pointer-events:none;
+    filter:drop-shadow(-14px 10px 18px rgba(0,0,0,.28))
+           drop-shadow(0 30px 40px rgba(30,70,150,.22));
+    transition:transform .18s ease-out;
+    will-change:transform;
+  }
+
+  /* ===== 票券卡片：上方弧形排布 ===== */
+  .ticket{
+    position:absolute;width:158px;
+    background:#fff;border:2px solid var(--ink);border-radius:10px;
+    padding:11px 13px 9px;
+    box-shadow:4px 5px 0 rgba(0,0,0,.85);
+    z-index:4;
+  }
+  .ticket .num{font-size:26px;font-weight:900;font-style:italic;line-height:1;}
+  .ticket h3{font-size:15.5px;font-weight:900;margin-top:3px;}
+  .ticket .en{font-size:8.5px;font-weight:800;letter-spacing:.2em;color:#8a8a8a;margin-top:2px;}
+  .ticket ul{list-style:none;margin-top:5px;font-size:9.5px;color:#444;line-height:1.5;}
+  .ticket .barcode{
+    margin-top:7px;height:12px;width:70%;
+    margin-left:auto;
+    background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 5px,transparent 5px 7px,var(--ink) 7px 10px,transparent 10px 12px);
+  }
+  /* 弧形：01 低 → 02 高 → 03 高 → 04 低（两侧让出头部空间） */
+  .t1{left:5.5%;  top:34%; transform:rotate(-13deg);}
+  .t2{left:24%;   top:9%;  transform:rotate(-5deg);}
+  .t3{left:59%;   top:9%;  transform:rotate(5deg);}
+  .t4{right:4.5%; top:30%; transform:rotate(12deg);}
+
+  /* ===== 左下标题区 ===== */
+  .title-block{position:absolute;left:5%;bottom:11%;z-index:5;}
+  .title-block .name-cn{font-size:clamp(36px,4.6vw,54px);font-weight:900;color:var(--blue);letter-spacing:.06em;line-height:1.12;}
+  .title-block .name-en{font-size:clamp(24px,3.2vw,38px);font-weight:900;color:var(--blue);font-style:italic;line-height:1.15;}
+  .title-block .name-sub{font-size:clamp(26px,3.6vw,42px);font-weight:900;color:var(--ink);letter-spacing:.14em;line-height:1.2;}
+  .title-block .social-row{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;}
+  .title-block .social-row a{display:inline-flex;align-items:center;gap:5px;text-decoration:none;
+    background:var(--blue);color:#fff;font-weight:800;font-size:13px;
+    padding:7px 13px;border-radius:20px;box-shadow:0 6px 14px rgba(46,111,224,.30);}
+  .title-block .social-row a .ic{font-size:15px;}
+
+  /* ===== 右侧爱好 + 口号 ===== */
+  .hobby-block{position:absolute;right:5.5%;bottom:30%;z-index:5;}
+  .hobby-block h4{color:var(--blue);font-size:19px;font-weight:900;margin-bottom:6px;letter-spacing:.12em;}
+  .hobby-block ul{list-style:none;}
+  .hobby-block li{font-size:15px;font-weight:600;line-height:1.85;color:#222;}
+  .motto{position:absolute;right:4.5%;bottom:8%;text-align:right;z-index:5;}
+  .motto .script{font-family:"Segoe Script","Brush Script MT",cursive;font-size:clamp(20px,2.4vw,27px);color:var(--ink);font-weight:700;}
+  .motto .sub{font-size:11px;font-weight:900;letter-spacing:.28em;color:var(--blue);margin-top:4px;}
+
+  /* 小装饰 */
+  .plus{position:absolute;color:#a9a9a9;font-weight:300;z-index:2;}
+  .p1{left:26%;top:64%;font-size:16px;}
+  .p2{right:30%;top:16%;font-size:14px;}
+  .meta-mini{position:absolute;font-size:9px;letter-spacing:.25em;color:#a9a9a9;z-index:2;}
+  .m1{left:6%;top:12%;}
+
+  /* 窄屏兜底 */
+  @media (max-width:760px){
+    .cover{aspect-ratio:auto;height:auto;padding:64px 16px 110px;}
+    .ticket{position:static;transform:none !important;margin:10px auto;}
+    .character{position:static;transform:none;display:block;margin:12px auto;height:320px;}
+    .title-block,.hobby-block,.motto{position:static;text-align:center;margin:14px 0;}
+    .big-word{font-size:90px;}
+    .side-tag{display:none;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="side-tag">简历封面制作</div>
+
+  <div class="stage">
+  <div class="cover">
+    <div class="topbar">
+      <span>谢泳乐 / PORTFOLIO</span>
+      <span>PRODUCT · DESIGN · CODE<span class="dot"></span></span>
+    </div>
+
+    <div class="meta-mini m1">ARCHIVE NO.001</div>
+    <span class="plus p1">+</span>
+    <span class="plus p2">+</span>
+
+    <div class="big-word">CREATE</div>
+
+    <!-- 四张票券：上方弧形（内容由脚本渲染，支持点击查看 / 编辑） -->
+    <div id="tickets"></div>
+
+    <!-- 左下标题 -->
+    <div class="title-block">
+      <div class="name-cn">谢泳乐</div>
+      <div class="name-en">ABOUT ME</div>
+      <div class="name-sub">个人介绍</div>
+      <div class="social-row" id="socialRow"></div>
+    </div>
+
+    <!-- 右侧爱好 -->
+    <div class="hobby-block">
+      <h4>爱好</h4>
+      <ul>
+        <li>看电影</li>
+        <li>看书</li>
+        <li>探索新工具</li>
+      </ul>
+    </div>
+
+    <div class="motto">
+      <div class="script">Stay curious.</div>
+      <div class="sub">MAKE THINGS HAPPEN.</div>
+    </div>
+
+    <div class="bottombar">
+      <span>谢泳乐 · PERSONAL ARCHIVE</span>
+      <span>IDEAS INTO REALITY</span>
+    </div>
+  </div>
+
+  <!-- 3D 人物：坐姿，坐在页尾，冲出卡片顶部形成裸眼3D -->
+  <img class="character" src="assets/character-sitting.png" alt="谢泳乐的3D形象（坐姿）">
+  </div>
+
+<script>
+  /* ---------- 鼠标视差（裸眼3D转头跟随） ---------- */
+  const stage=document.querySelector('.stage');
+  const ch=document.querySelector('.character');
+  const word=document.querySelector('.big-word');
+  if(stage&&ch&&word&&matchMedia('(pointer:fine)').matches){
+    window.addEventListener('mousemove',e=>{
+      const r=stage.getBoundingClientRect();
+      const dx=(e.clientX-(r.left+r.width/2))/r.width;   // [-1,1] 左右
+      const dy=(e.clientY-(r.top+r.height/2))/r.height;  // [-1,1] 上下
+      const tx=dx*30, ty=dy*18, rot=dx*9;                // 头部随光标摆动
+      ch.style.transform=`translateX(-50%) translate(${tx}px, ${ty}px) rotate(${rot}deg)`;
+      word.style.transform=`translate(-50%,-50%) translate(${dx*-14}px, ${dy*-9}px)`;
+    });
+    window.addEventListener('mouseleave',()=>{
+      ch.style.transform=`translateX(-50%) rotate(0deg)`;
+      word.style.transform=`translate(-50%,-50%)`;
+    });
+  }
+
+  /* ---------- 卡片数据 ---------- */
+  const DEFAULTS=[
+    {num:'01',title:'基本信息',en:'PROFILE',
+     items:['2013-2019 就读于重庆市江北区新村实验小学',
+            '2019-2022 就读于重庆市两江新区华东师范大学附属中旭学校',
+            '2022-2025 就读于重庆市南岸区十一中',
+            '2025-今 就读于重庆市移通学院',
+            '专业：新媒体技术'],
+     social:{douyin:{handle:'26045958871',url:'https://v.douyin.com/dYIVoUlufOM/'},xhs:{handle:'5043119754',url:'https://www.xiaohongshu.com/user/profile/68629f6d000000001d0087f4?xsec_token=ABK5blKjmmGuH8bJ4X4mGExtn8PisZ97oeaLXpyWy2koQ%3D&xsec_source=pc_search'}},
+     images:[]},
+    {num:'02',title:'实习经历',en:'INTERNSHIP',
+     items:['清华大学2026届毕业生大型就业洽谈会',
+            '北京大学2026届毕业生春季综合双选会',
+            '「百万英才汇南粤」N城联动春季招聘（北师大专场）',
+            '招聘会现场实拍'],
+     images:[
+       {src:'assets/docimg/shixi1.jpg',cap:'清华大学2026届毕业生大型就业洽谈会'},
+       {src:'assets/docimg/shixi2.jpg',cap:'北京大学2026届毕业生春季综合双选会 · 2026年3月'},
+       {src:'assets/docimg/shixi3.jpg',cap:'「百万英才汇南粤」2026年N城联动春季招聘活动 · 北京师范大学专场（深圳）'},
+       {src:'assets/docimg/shixi4.jpg',cap:'招聘会展位现场'}]},
+    {num:'03',title:'兴趣爱好',en:'FREEDIVING & YOGA',
+     items:['自由潜水 Freediver（SSI 国际认证）',
+            'Mermaid Palace Diving Club',
+            '2026 年开始自由潜 · 已记录 5+ 次',
+            '瑜伽 · 重庆市第十四届全民健身运动会瑜伽比赛'],
+     video:'assets/hobby-video.mp4',
+     videoCap:'自由潜水水下训练实拍',
+     images:[{src:'assets/docimg/aihao1.jpg',cap:'SSI Freediver 认证卡 · YONGLE XIE'},
+             {src:'assets/docimg/aihao2.jpg',cap:'「我要上全运」重庆市第十四届全民健身运动会瑜伽比赛 · 重庆移通学院瑜伽队'}]},
+    {num:'04',title:'荣誉奖项',en:'HONORS',
+     items:['2026.02 亚洲大学生创意设计展《墨绿花影》优秀奖',
+            '2026.02 亚洲大学生创意设计展《白蕊藏锋》三等奖',
+            '2026.01 亚洲青年新秀奖《红纱烬舞》一等奖',
+            '2026.01 亚洲青年新秀奖《百合絮语》二等奖',
+            '2026.01 亚洲青年新秀奖《暗夜花笺·青黛凝香》优秀奖',
+            '2025.11 「东方美学」艺术设计作品征集《血纹礼骸》三等奖',
+            '2025.11 「东方美学」艺术设计作品征集《青瓷絮语》优秀奖',
+            '2025.10 亚洲TRANS—A设计创新奖《蓝瓷哥特絮语》优秀奖',
+            '2025.10 亚洲TRANS—A设计创新奖《绯狼血誓之烬》铜奖',
+            '2026.04 重庆移通学院第四届大数据技术应用大赛 二等奖',
+            '2026.04 「到綦江」文旅创意图片及短视频大赛 图片类优秀奖'],
+     images:[
+       {src:'assets/docimg/honor1.jpg',cap:''},
+       {src:'assets/docimg/honor2.jpg',cap:''},
+       {src:'assets/docimg/honor3.jpg',cap:''},
+       {src:'assets/docimg/honor4.jpg',cap:''},
+       {src:'assets/docimg/honor5.jpg',cap:''},
+       {src:'assets/docimg/honor6.jpg',cap:''},
+       {src:'assets/docimg/honor7.jpg',cap:''},
+       {src:'assets/docimg/honor8.jpg',cap:''},
+       {src:'assets/docimg/honor9.jpg',cap:''},
+       {src:'assets/docimg/honor10.jpg',cap:''},
+       {src:'assets/docimg/honor11.jpg',cap:''},
+       {src:'assets/docimg/honor12.jpg',cap:''},
+       {src:'assets/docimg/honor13.jpg',cap:''},
+       {src:'assets/docimg/honor14.jpg',cap:''},
+       {src:'assets/docimg/honor15.jpg',cap:''}]},
+  ];
+  const KEY='xyCards_v4';
+  let cards=loadCards();
+  function loadCards(){try{const s=localStorage.getItem(KEY);if(s)return JSON.parse(s);}catch(e){}return JSON.parse(JSON.stringify(DEFAULTS));}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+
+  const tpos=['t1','t2','t3','t4'];
+  function renderTickets(){
+    const wrap=document.getElementById('tickets');
+    wrap.innerHTML='';
+    cards.forEach((c,i)=>{
+      const d=document.createElement('div');
+      d.className='ticket '+tpos[i];
+      d.title='点击查看详情';
+      d.innerHTML=`<div class="num">${esc(c.num)}</div>
+        <h3>${esc(c.title)}</h3>
+        <div class="barcode"></div>`;
+      d.addEventListener('click',()=>{location.href='card-detail.html?card='+i;});
+      wrap.appendChild(d);
+    });
+  }
+
+
+  renderTickets();
+
+  /* 封面：名字下方展示抖音/小红书跳转（仅在有链接时显示，取01卡片的社交字段） */
+  (function(){
+    const row=document.getElementById('socialRow');
+    const soc=(cards[0]&&cards[0].social)||{};
+    const defs=[['douyin','🎵','抖音'],['xhs','📕','小红书']];
+    row.innerHTML=defs.filter(([k])=>soc[k]&&soc[k].url)
+      .map(([k,ic,nm])=>`<a href="${esc(soc[k].url)}" target="_blank" rel="noopener" title="账号：${esc(soc[k].handle)}"><span class="ic">${ic}</span>${nm} <b>${esc(soc[k].handle)}</b></a>`)
+      .join('');
+  })();
+</script>
+
+</body>
+</html>
