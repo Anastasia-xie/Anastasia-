@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>谢泳乐 · 个人介绍 | 卡片详情</title>
+<style>
+  :root{
+    --sky:#d8e7fb;
+    --blue:#2e6fe0;
+    --ink:#1a2740;
+    --paper:#ffffff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    min-height:100vh;background:var(--sky);
+    display:flex;align-items:center;justify-content:center;
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    color:var(--ink);padding:40px 16px;position:relative;overflow-x:hidden;
+  }
+  /* 背景描边大字 */
+  .big-word{
+    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+    font-size:clamp(140px,22vw,300px);font-weight:900;font-style:italic;
+    color:transparent;-webkit-text-stroke:3px rgba(255,255,255,.55);
+    letter-spacing:.02em;user-select:none;z-index:0;pointer-events:none;
+  }
+  .panel{
+    position:relative;z-index:2;width:min(720px,94vw);
+    background:var(--paper);border-radius:18px;
+    box-shadow:0 26px 60px rgba(40,90,180,.28),0 4px 14px rgba(40,90,180,.15);
+    padding:34px 38px 40px;overflow:hidden;
+  }
+  .topbar{display:flex;justify-content:space-between;align-items:center;
+    font-size:13px;font-weight:800;letter-spacing:.1em;color:#556;
+    border-bottom:1px solid rgba(0,0,0,.07);padding-bottom:14px;margin-bottom:8px;}
+  .topbar .back{color:var(--blue);text-decoration:none;font-weight:900;}
+  .topbar .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--blue);margin-left:8px;vertical-align:middle;}
+
+  .num{font-size:46px;font-weight:900;font-style:italic;color:var(--blue);line-height:1;margin-top:18px;}
+  .d-en{font-size:13px;letter-spacing:.3em;color:var(--blue);font-weight:800;margin-top:10px;}
+  .d-title{font-size:clamp(30px,5vw,44px);font-weight:900;color:var(--ink);margin:6px 0 18px;}
+  .gallery{display:flex;flex-direction:column;gap:20px;margin-top:6px;}
+  .d-fig{margin:0;}
+  .d-fig img{display:block;max-width:100%;max-height:520px;margin:0 auto;border-radius:14px;
+    box-shadow:0 12px 30px rgba(40,90,180,.18);object-fit:contain;}
+  .d-fig figcaption{text-align:center;font-size:13px;color:#667;margin-top:7px;font-weight:600;}
+  .d-list{list-style:none;margin-top:6px;}
+  .d-list li{font-size:17px;line-height:2;padding-left:22px;position:relative;color:#334;}
+  .d-list li:before{content:"▪";color:var(--blue);position:absolute;left:0;font-size:18px;}
+  .empty{color:#9aa;font-size:16px;margin-top:10px;}
+
+  /* 社交账号链接 */
+  .social{margin-top:24px;display:flex;gap:14px;flex-wrap:wrap;}
+  .social a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;
+    background:var(--blue);color:#fff;font-weight:800;font-size:15px;
+    padding:11px 20px;border-radius:30px;box-shadow:0 8px 18px rgba(46,111,224,.32);
+    transition:transform .15s ease,box-shadow .15s ease;}
+  .social a:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(46,111,224,.42);}
+  .social a .ic{font-size:18px;}
+
+  .foot{margin-top:26px;display:flex;justify-content:space-between;align-items:center;
+    border-top:1px solid rgba(0,0,0,.08);padding-top:14px;font-size:12px;font-weight:700;letter-spacing:.16em;color:#778;}
+  .foot a{color:var(--blue);text-decoration:none;font-weight:900;}
+
+  @media (max-width:560px){
+    .panel{padding:24px 20px 28px;}
+    .big-word{font-size:120px;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="big-word">CREATE</div>
+
+  <div class="panel">
+    <div class="topbar">
+      <a class="back" href="index.html">← 返回封面</a>
+      <span>谢泳乐 / PORTFOLIO<span class="dot"></span></span>
+    </div>
+
+    <div class="num" id="num">01</div>
+    <div class="d-en" id="en">ACADEMICS</div>
+    <h1 class="d-title" id="title">学习经历</h1>
+    <div class="gallery" id="gallery"></div>
+    <ul class="d-list" id="list"></ul>
+    <div class="empty" id="empty" style="display:none;">暂无内容，可返回封面用「✎ 编辑卡片内容」添加。</div>
+    <div class="social" id="social"></div>
+
+    <div class="foot">
+      <span>IDEAS INTO REALITY</span>
+      <a href="index.html">回封面编辑 →</a>
+    </div>
+  </div>
+
+<script>
+  const DEFAULTS=[
+    {num:'01',title:'基本信息',en:'PROFILE',
+     items:['2013-2019 就读于重庆市江北区新村实验小学',
+            '2019-2022 就读于重庆市两江新区华东师范大学附属中旭学校',
+            '2022-2025 就读于重庆市南岸区十一中',
+            '2025-今 就读于重庆市移通学院',
+            '专业：新媒体技术'],
+     social:{douyin:{handle:'26045958871',url:'https://v.douyin.com/dYIVoUlufOM/'},xhs:{handle:'5043119754',url:'https://www.xiaohongshu.com/user/profile/68629f6d000000001d0087f4?xsec_token=ABK5blKjmmGuH8bJ4X4mGExtn8PisZ97oeaLXpyWy2koQ%3D&xsec_source=pc_search'}},
+     images:[]},
+    {num:'02',title:'实习经历',en:'INTERNSHIP',
+     items:['清华大学2026届毕业生大型就业洽谈会',
+            '北京大学2026届毕业生春季综合双选会',
+            '「百万英才汇南粤」N城联动春季招聘（北师大专场）',
+            '招聘会现场实拍'],
+     images:[
+       {src:'assets/docimg/shixi1.jpg',cap:'清华大学2026届毕业生大型就业洽谈会'},
+       {src:'assets/docimg/shixi2.jpg',cap:'北京大学2026届毕业生春季综合双选会 · 2026年3月'},
+       {src:'assets/docimg/shixi3.jpg',cap:'「百万英才汇南粤」2026年N城联动春季招聘活动 · 北京师范大学专场（深圳）'},
+       {src:'assets/docimg/shixi4.jpg',cap:'招聘会展位现场'}]},
+    {num:'03',title:'兴趣爱好',en:'FREEDIVING & YOGA',
+     items:['自由潜水 Freediver（SSI 国际认证）',
+            'Mermaid Palace Diving Club',
+            '2026 年开始自由潜 · 已记录 5+ 次',
+            '瑜伽 · 重庆市第十四届全民健身运动会瑜伽比赛'],
+     video:'assets/hobby-video.mp4',
+     videoCap:'自由潜水水下训练实拍',
+     images:[{src:'assets/docimg/aihao1.jpg',cap:'SSI Freediver 认证卡 · YONGLE XIE'},
+             {src:'assets/docimg/aihao2.jpg',cap:'「我要上全运」重庆市第十四届全民健身运动会瑜伽比赛 · 重庆移通学院瑜伽队'}]},
+    {num:'04',title:'荣誉奖项',en:'HONORS',
+     items:['2026.02 亚洲大学生创意设计展《墨绿花影》优秀奖',
+            '2026.02 亚洲大学生创意设计展《白蕊藏锋》三等奖',
+            '2026.01 亚洲青年新秀奖《红纱烬舞》一等奖',
+            '2026.01 亚洲青年新秀奖《百合絮语》二等奖',
+            '2026.01 亚洲青年新秀奖《暗夜花笺·青黛凝香》优秀奖',
+            '2025.11 「东方美学」艺术设计作品征集《血纹礼骸》三等奖',
+            '2025.11 「东方美学」艺术设计作品征集《青瓷絮语》优秀奖',
+            '2025.10 亚洲TRANS—A设计创新奖《蓝瓷哥特絮语》优秀奖',
+            '2025.10 亚洲TRANS—A设计创新奖《绯狼血誓之烬》铜奖',
+            '2026.04 重庆移通学院第四届大数据技术应用大赛 二等奖',
+            '2026.04 「到綦江」文旅创意图片及短视频大赛 图片类优秀奖'],
+     images:[
+       {src:'assets/docimg/honor1.jpg',cap:''},
+       {src:'assets/docimg/honor2.jpg',cap:''},
+       {src:'assets/docimg/honor3.jpg',cap:''},
+       {src:'assets/docimg/honor4.jpg',cap:''},
+       {src:'assets/docimg/honor5.jpg',cap:''},
+       {src:'assets/docimg/honor6.jpg',cap:''},
+       {src:'assets/docimg/honor7.jpg',cap:''},
+       {src:'assets/docimg/honor8.jpg',cap:''},
+       {src:'assets/docimg/honor9.jpg',cap:''},
+       {src:'assets/docimg/honor10.jpg',cap:''},
+       {src:'assets/docimg/honor11.jpg',cap:''},
+       {src:'assets/docimg/honor12.jpg',cap:''},
+       {src:'assets/docimg/honor13.jpg',cap:''},
+       {src:'assets/docimg/honor14.jpg',cap:''},
+       {src:'assets/docimg/honor15.jpg',cap:''}]},
+  ];
+  const KEY='xyCards_v4';
+  function loadCards(){try{const s=localStorage.getItem(KEY);if(s)return JSON.parse(s);}catch(e){}return JSON.parse(JSON.stringify(DEFAULTS));}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+
+  const params=new URLSearchParams(location.search);
+  let idx=parseInt(params.get('card')||'0',10);
+  if(isNaN(idx)||idx<0||idx>3) idx=0;
+
+  const cards=loadCards();
+  const c=cards[idx]||DEFAULTS[idx];
+
+  document.getElementById('num').textContent=c.num;
+  document.getElementById('en').textContent=c.en;
+  document.getElementById('title').textContent=c.title;
+
+  const gal=document.getElementById('gallery');
+  let galHtml='';
+  if(c.video){
+    galHtml+=`<figure class="d-fig"><video src="${esc(c.video)}" controls preload="metadata" playsinline style="width:100%;max-height:520px;border-radius:12px;background:#000;display:block;"></video><figcaption>${esc(c.videoCap||'')}</figcaption></figure>`;
+  }
+  const imgs=c.images||[];
+  galHtml+=imgs.map(im=>`<figure class="d-fig"><img src="${esc(im.src)}" alt="" loading="lazy"><figcaption>${esc(im.cap||'')}</figcaption></figure>`).join('');
+  gal.innerHTML=galHtml;
+
+  const items=(c.items||[]).filter(Boolean);
+  const list=document.getElementById('list');
+  const empty=document.getElementById('empty');
+  if(items.length){
+    list.innerHTML=items.map(x=>`<li>${esc(x)}</li>`).join('');
+  }else{
+    list.style.display='none';
+  }
+  if(!items.length && !imgs.length){
+    empty.style.display='block';
+  }
+
+  /* 社交账号跳转链接（仅在有链接时显示） */
+  const socialEl=document.getElementById('social');
+  const soc=c.social||{};
+  const socDefs=[['douyin','🎵','抖音'],['xhs','📕','小红书']];
+  const socHtml=socDefs.filter(([k])=>soc[k]&&soc[k].url).map(([k,ic,nm])=>
+    `<a href="${esc(soc[k].url)}" target="_blank" rel="noopener" title="账号：${esc(soc[k].handle)}">${ic} ${nm} <b>${esc(soc[k].handle)}</b></a>`).join('');
+  socialEl.innerHTML=socHtml;
+</script>
+
+</body>
+</html>
